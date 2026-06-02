@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.post_hub.iam_service.exception.NotFoundException;
+import ru.post_hub.iam_service.mapper.PostMapper;
 import ru.post_hub.iam_service.model.constans.ApiErrorMessage;
 import ru.post_hub.iam_service.model.dto.post.PostDTO;
 import ru.post_hub.iam_service.model.entity.Post;
@@ -15,20 +16,16 @@ import ru.post_hub.iam_service.service.PostService;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    private  final PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final PostMapper postMapper;
 
     @Override
     public IamResponse<PostDTO> getById(@NotNull Integer postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.POST_INFO_BY_ID.getMessage(postId)));
-    PostDTO postDTO = PostDTO.builder()
-            .id(post.getId())
-            .title(post.getTitle())
-            .content(post.getContent())
-            .likes(post.getLikes())
-            .created(post.getCreated())
-            .build();
 
-    return IamResponse.success(postDTO);
+        PostDTO postDTO = postMapper.toPostDTO(post);
+
+        return IamResponse.success(postDTO);
     }
 }
