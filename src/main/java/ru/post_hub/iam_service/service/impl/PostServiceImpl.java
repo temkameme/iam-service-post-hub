@@ -3,7 +3,7 @@ package ru.post_hub.iam_service.service.impl;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.post_hub.iam_service.exeption.NotFoundException;
+import ru.post_hub.iam_service.exception.NotFoundException;
 import ru.post_hub.iam_service.model.constans.ApiErrorMessage;
 import ru.post_hub.iam_service.model.dto.post.PostDTO;
 import ru.post_hub.iam_service.model.entity.Post;

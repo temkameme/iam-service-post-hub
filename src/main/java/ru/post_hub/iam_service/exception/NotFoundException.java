@@ -1,4 +1,4 @@
-package ru.post_hub.iam_service.exeption;
+package ru.post_hub.iam_service.exception;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
