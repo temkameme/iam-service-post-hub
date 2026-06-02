@@ -1,6 +1,7 @@
-package ru.post_hub.iam_service.service;
+package ru.post_hub.iam_service.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.post_hub.iam_service.service.PostService;
 
 import java.util.ArrayList;
 import java.util.List;

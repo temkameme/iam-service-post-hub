@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.post_hub.iam_service.service.PostServiceImpl;
+import ru.post_hub.iam_service.service.impl.PostServiceImpl;
 
 import java.util.Map;
 
