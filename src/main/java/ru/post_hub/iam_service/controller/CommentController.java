@@ -2,7 +2,7 @@
 package ru.post_hub.iam_service.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,29 +15,31 @@ import java.util.Map;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private CommentService commentService;
+    private final CommentService defaultCommentService;
+    private final CommentService advencedCommentService;
 
     @Autowired
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
+    public CommentController(CommentService defaultCommentService,
+                             @Qualifier("advencedCommentService") CommentService advencedCommentService) {
+        this.defaultCommentService = defaultCommentService;
+        this.advencedCommentService = advencedCommentService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<String> addComment(@RequestBody Map<String, Object> requestBody) {
+    @PostMapping("/createDefaultComment")
+    public ResponseEntity<String> createDefaultComment(@RequestBody Map<String, Object> requestBody) {
         String content = (String) requestBody.get("content");
 
-        commentService.createComment(content);
+        defaultCommentService.createComment(content);
 
-        return new ResponseEntity<>("Comment added" + content, HttpStatus.OK);
+        return new ResponseEntity<>("Default comment added" + content, HttpStatus.OK);
     }
 
-    @PostMapping("/switchService")
-    public ResponseEntity<String> switchToSecondService(@RequestBody Map<String, Object> requestBody) {
-        this.commentService = new SecondCommentServiceImpl();
+    @PostMapping("/createAdvanced")
+    public ResponseEntity<String> createAdvancedComment(@RequestBody Map<String, Object> requestBody) {
 
         String content = (String) requestBody.get("content");
-        commentService.createComment(content);
+        advencedCommentService.createComment(content);
 
-        return new ResponseEntity<>("Switched to SecondCommentService and added" + content, HttpStatus.OK);
+        return new ResponseEntity<>("Advanced comment added" + content, HttpStatus.OK);
     }
 }
