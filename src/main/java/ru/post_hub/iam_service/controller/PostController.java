@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.post_hub.iam_service.model.constans.ApiErrorMessage;
 import ru.post_hub.iam_service.model.constans.ApiLogMessage;
+import ru.post_hub.iam_service.model.dto.post.PostDTO;
 import ru.post_hub.iam_service.model.entity.Post;
+import ru.post_hub.iam_service.model.response.IamResponse;
 import ru.post_hub.iam_service.repositoies.PostRepository;
+import ru.post_hub.iam_service.service.PostService;
+import ru.post_hub.iam_service.utils.ApiUtils;
 
 @Slf4j
 @RestController
@@ -18,18 +22,14 @@ import ru.post_hub.iam_service.repositoies.PostRepository;
 @RequestMapping("${end.point.posts}")
 public class PostController {
 
-    private final PostRepository postRepository;
+    private final PostService postService;
 
     @GetMapping("${end.points.id}")
-    public ResponseEntity<Post> getPostById(
+    public ResponseEntity<IamResponse<PostDTO>> getPostById(
             @PathVariable(name = "id") Integer postId) {
-        log.info(ApiLogMessage.POST_INFO_BY_ID.getMessage(postId));
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-        return postRepository.findById(postId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> {
-                    log.info(ApiErrorMessage.POST_INFO_BY_ID.getMessage(postId));
-                    return ResponseEntity.notFound().build();
-                });
+        IamResponse<PostDTO> response = postService.getById(postId);
+        return ResponseEntity.ok(response);
     }
 }
